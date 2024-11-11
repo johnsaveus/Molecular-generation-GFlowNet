@@ -10,4 +10,4 @@ requires-python = ">=3.10"
 
 [tool.setuptools.packages.find]
 # This tells setuptools to automatically find your packages
-include = ["gflownet*"]
+include = ["gflownet*", "mpnn*"] 
