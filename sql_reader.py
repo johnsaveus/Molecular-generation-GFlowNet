@@ -1,7 +1,7 @@
 import sqlite3
 
 # Specify your database file path
-db_path = "gflownet/tasks/logs/debug_run_seh_frag_2024-11-11_16-55-32/train/generated_objs_0.db"
+db_path = "gflownet/tasks/logs/debug_run_seh_frag_2024-11-11_17-11-46/train/generated_objs_0.db"
 
 # Connect to the database
 conn = sqlite3.connect(db_path)
