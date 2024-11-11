@@ -1,7 +1,7 @@
 import torch
 from torch import Tensor
 
-import LogScalar
+from gflownet import LogScalar
 
 
 def to_logreward(reward: Tensor) -> LogScalar:

@@ -17,23 +17,23 @@ from rdkit import RDLogger
 from torch import Tensor
 from torch.utils.data import DataLoader, Dataset
 
-import GFNAlgorithm, GFNTask
-from data.data_source import DataSource
-from data.replay_buffer import ReplayBuffer
-from envs.graph_building_env import (
+from gflownet import GFNAlgorithm, GFNTask
+from gflownet.data.data_source import DataSource
+from gflownet.data.replay_buffer import ReplayBuffer
+from gflownet.envs.graph_building_env import (
     GraphActionCategorical,
     GraphBuildingEnv,
     GraphBuildingEnvContext,
 )
 
 # from envs.seq_building_env import SeqBatch
-from utils.misc import (
+from gflownet.utils.misc import (
     create_logger,
     set_main_process_device,
     set_worker_rng_seed,
 )
-from utils.multiprocessing_proxy import mp_object_wrapper
-from utils.sqlite_log import SQLiteLogHook
+from gflownet.utils.multiprocessing_proxy import mp_object_wrapper
+from gflownet.utils.sqlite_log import SQLiteLogHook
 
 from .config import Config
 

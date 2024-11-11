@@ -1,7 +1,7 @@
 from copy import deepcopy
 from typing import Any, Dict, List, Optional, Tuple
 
-import GFNAlgorithm
+from gflownet import GFNAlgorithm
 import networkx as nx
 import numpy as np
 import torch
@@ -10,10 +10,10 @@ import torch_geometric.data as gd
 from torch import Tensor
 from torch_scatter import scatter, scatter_sum
 
-from algo.config import Backward, LossFN, NLoss, TBVariant
-from algo.graph_sampling import GraphSampler
-from config import Config
-from envs.graph_building_env import (
+from gflownet.algo.config import Backward, LossFN, NLoss, TBVariant
+from gflownet.algo.graph_sampling import GraphSampler
+from gflownet.config import Config
+from gflownet.envs.graph_building_env import (
     ActionIndex,
     Graph,
     GraphAction,
@@ -23,7 +23,7 @@ from envs.graph_building_env import (
     GraphBuildingEnvContext,
     generate_forward_trajectory,
 )
-from utils.misc import get_worker_device
+from gflownet.utils.misc import get_worker_device
 
 
 def shift_right(x: torch.Tensor, z=0):

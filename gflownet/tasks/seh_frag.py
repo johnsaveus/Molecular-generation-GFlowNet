@@ -10,21 +10,22 @@ from torch import Tensor
 from torch.utils.data import Dataset
 from torch_geometric.data import Data
 
-import GFNTask, LogScalar, ObjectProperties
-from config import Config, init_empty
-from envs.frag_mol_env import FragMolBuildingEnvContext, Graph
-from models import bengio2021flow
-from online_trainer import StandardOnlineTrainer
-from utils.conditioning import TemperatureConditional
-from utils.misc import get_worker_device
-from utils.transforms import to_logreward
+from gflownet import GFNTask, LogScalar, ObjectProperties
+
+from gflownet.config import Config, init_empty
+from gflownet.envs.frag_mol_env import FragMolBuildingEnvContext, Graph
+from gflownet.models import bengio2021flow
+from gflownet.online_trainer import StandardOnlineTrainer
+from gflownet.utils.conditioning import TemperatureConditional
+from gflownet.utils.misc import get_worker_device
+from gflownet.utils.transforms import to_logreward
 
 
 class SEHTask(GFNTask):
     """Sets up a task where the reward is computed using a proxy for the binding energy of a molecule to
     Soluble Epoxide Hydrolases.
 
-    The proxy is pretrained, and obtained from the original GFlowNet paper, see `gflownet.models.bengio2021flow`.
+    The proxy is pretrained, and obtained from the original GFlowNet pape   r, see `gflownet.models.bengio2021flow`.
 
     This setup essentially reproduces the results of the Trajectory Balance paper when using the TB
     objective, or of the original paper when using Flow Matching.

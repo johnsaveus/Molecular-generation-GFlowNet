@@ -9,12 +9,12 @@ from torch import Tensor
 from torch.distributions.dirichlet import Dirichlet
 from torch_geometric import data as gd
 
-import LinScalar, LogScalar, ObjectProperties
-from config import Config
-from utils import metrics
-from utils.focus_model import TabularFocusModel
-from utils.misc import get_worker_device, get_worker_rng
-from utils.transforms import thermometer
+from gflownet import LinScalar, LogScalar, ObjectProperties
+from gflownet.config import Config
+from gflownet.utils import metrics
+from gflownet.utils.focus_model import TabularFocusModel
+from gflownet.utils.misc import get_worker_device, get_worker_rng
+from gflownet.utils.transforms import thermometer
 
 Tin = TypeVar("Tin")
 Tout = TypeVar("Tout")

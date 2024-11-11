@@ -6,7 +6,7 @@ import torch
 import torch.nn as nn
 from torch import Tensor
 
-from envs.graph_building_env import (
+from gflownet.envs.graph_building_env import (
     Graph,
     GraphAction,
     GraphActionCategorical,
@@ -14,8 +14,8 @@ from envs.graph_building_env import (
     action_type_to_mask,
 )
 
-from models.graph_transformer import GraphTransformerGFN
-from utils.misc import get_worker_device, get_worker_rng
+from gflownet.models.graph_transformer import GraphTransformerGFN
+from gflownet.utils.misc import get_worker_device, get_worker_rng
 
 
 def relabel(g: Graph, ga: GraphAction):

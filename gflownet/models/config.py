@@ -1,7 +1,7 @@
 from dataclasses import dataclass, field
 from enum import Enum
 
-from utils.misc import StrictDataClass
+from gflownet.utils.misc import StrictDataClass
 
 
 @dataclass

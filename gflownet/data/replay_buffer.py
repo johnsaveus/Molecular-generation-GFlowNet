@@ -3,8 +3,8 @@ from typing import List
 import numpy as np
 import torch
 
-from config import Config
-from utils.misc import get_worker_rng
+from gflownet.config import Config
+from gflownet.utils.misc import get_worker_rng
 
 
 class ReplayBuffer(object):

@@ -2,7 +2,7 @@ from dataclasses import dataclass, field
 from enum import IntEnum
 from typing import Optional
 
-from utils.misc import StrictDataClass
+from gflownet.utils.misc import StrictDataClass
 
 
 class Backward(IntEnum):

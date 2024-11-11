@@ -9,14 +9,14 @@ import torch
 import torch_geometric.data as gd
 from scipy import special
 
-from envs.graph_building_env import (
+from gflownet.envs.graph_building_env import (
     ActionIndex,
     Graph,
     GraphAction,
     GraphActionType,
     GraphBuildingEnvContext,
 )
-from models import bengio2021flow
+from gflownet.models import bengio2021flow
 
 
 class FragMolBuildingEnvContext(GraphBuildingEnvContext):

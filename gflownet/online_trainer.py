@@ -7,9 +7,9 @@ import torch
 from omegaconf import OmegaConf
 from torch import Tensor
 
-from algo.trajectory_balance import TrajectoryBalance
-from data.replay_buffer import ReplayBuffer
-from models.graph_transformer import GraphTransformerGFN
+from gflownet.algo.trajectory_balance import TrajectoryBalance
+from gflownet.data.replay_buffer import ReplayBuffer
+from gflownet.models.graph_transformer import GraphTransformerGFN
 
 from .trainer import GFNTrainer
 

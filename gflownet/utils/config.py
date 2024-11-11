@@ -1,7 +1,7 @@
 from dataclasses import dataclass, field
 from typing import Any, List, Optional
 
-from utils.misc import StrictDataClass
+from gflownet.utils.misc import StrictDataClass
 
 
 @dataclass

@@ -5,11 +5,11 @@ import numpy as np
 import torch
 from torch.utils.data import IterableDataset
 
-import GFNAlgorithm, GFNTask
-from config import Config
-from replay_buffer import ReplayBuffer, detach_and_cpu
-from envs.graph_building_env import GraphBuildingEnvContext
-from utils.misc import get_worker_rng
+from gflownet import GFNAlgorithm, GFNTask
+from gflownet.config import Config
+from gflownet.data.replay_buffer import ReplayBuffer, detach_and_cpu
+from gflownet.envs.graph_building_env import GraphBuildingEnvContext
+from gflownet.utils.misc import get_worker_rng
 
 
 def cycle_call(it):

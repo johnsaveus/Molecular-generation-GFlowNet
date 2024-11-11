@@ -8,8 +8,8 @@ import torch_geometric.nn as gnn
 from torch import Tensor
 from torch_geometric.utils import add_self_loops
 
-from config import Config
-from envs.graph_building_env import (
+from gflownet.config import Config
+from gflownet.envs.graph_building_env import (
     GraphActionCategorical,
     GraphActionType,
     action_type_to_mask,
