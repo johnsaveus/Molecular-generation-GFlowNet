@@ -115,30 +115,6 @@ class TBConfig(StrictDataClass):
 
 
 @dataclass
-class MOQLConfig(StrictDataClass):
-    gamma: float = 1
-    num_omega_samples: int = 32
-    num_objectives: int = 2
-    lambda_decay: int = 10_000
-    penalty: float = -10
-
-
-@dataclass
-class A2CConfig(StrictDataClass):
-    entropy: float = 0.01
-    gamma: float = 1
-    penalty: float = -10
-
-
-@dataclass
-class FMConfig(StrictDataClass):
-    epsilon: float = 1e-38
-    balanced_loss: bool = False
-    leaf_coef: float = 10
-    correct_idempotent: bool = False
-
-
-@dataclass
 class SQLConfig(StrictDataClass):
     alpha: float = 0.01
     gamma: float = 1
@@ -197,7 +173,4 @@ class AlgoConfig(StrictDataClass):
     valid_random_action_prob: float = 0.0
     sampling_tau: float = 0.0
     tb: TBConfig = field(default_factory=TBConfig)
-    moql: MOQLConfig = field(default_factory=MOQLConfig)
-    a2c: A2CConfig = field(default_factory=A2CConfig)
-    fm: FMConfig = field(default_factory=FMConfig)
     sql: SQLConfig = field(default_factory=SQLConfig)
