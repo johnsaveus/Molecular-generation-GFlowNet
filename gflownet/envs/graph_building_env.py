@@ -21,9 +21,6 @@ class Graph(nx.Graph):
     def __repr__(self):
         return f'<{list(self.nodes)}, {list(self.edges)}, {list(self.nodes[i]["v"] for i in self.nodes)}>'
 
-    def bridges(self):
-        return list(nx.bridges(self))
-
     def relabel_nodes(self, rmap):
         return nx.relabel_nodes(self, rmap)
 
@@ -716,30 +713,6 @@ class GraphActionCategorical:
             self._action_masks = [i.to(device) for i in self._action_masks]
         return self
 
-    def log_n_actions(self):
-        if self.log_n is None:
-            self.log_n = (
-                sum(
-                    [
-                        scatter(
-                            m.broadcast_to(i.shape).int().sum(1),
-                            b,
-                            dim=0,
-                            dim_size=self.num_graphs,
-                            reduce="sum",
-                        )
-                        for m, i, b in zip(
-                            self._action_masks, self._masked_logits, self.batch
-                        )
-                    ]
-                )
-                .clamp(1)
-                .float()
-                .log()
-                .clamp(1)
-            )
-        return self.log_n
-
     def _compute_batchwise_max(
         self,
         x: List[torch.Tensor],
@@ -986,31 +959,6 @@ class GraphActionCategorical:
         col_offsets = actions[:, 2]
         # Index the flattened array
         return all_logprobs[t_offsets + row_offsets + col_offsets]
-
-    def entropy(self, logprobs=None):
-        """The entropy for each graph categorical in the batch
-
-        Parameters
-        ----------
-        logprobs: List[Tensor]
-            The log-probablities of the policy (self.logsoftmax() by default)
-
-        Returns
-        -------
-        entropies: Tensor
-            The entropy for each graph categorical in the batch
-        """
-        if logprobs is None:
-            logprobs = self.logsoftmax()
-        entropy = -sum(
-            [
-                scatter(
-                    i * i.exp(), b, dim=0, dim_size=self.num_graphs, reduce="sum"
-                ).sum(1)
-                for i, b in zip(logprobs, self.batch)
-            ]
-        )
-        return entropy
 
 
 class GraphBuildingEnvContext:

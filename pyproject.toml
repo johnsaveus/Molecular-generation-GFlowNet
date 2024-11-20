@@ -1,13 +1,42 @@
 [build-system]
-requires = ["setuptools>=61.0"]
+requires = ["setuptools>=61.0", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "your-project-name"
+name = "Molecular-Generation-GFlow-Net"
 version = "0.1.0"
-description = "Your project description"
+description = "Molecular-Generation-GFlow-Net"
 requires-python = ">=3.10"
+readme = "README.md"
+
+dependencies = [
+"botorch==0.9.5",
+"cvxopt==1.3.2",  
+"gitdb==4.0.11", 
+"gitpython==3.1.42",
+"networkx==3.2.1",
+"numpy==1.26.4", 
+"omegaconf==2.3.0",  
+"tensorboard==2.16.1",
+"tf-keras==2.15.0 ",
+"rdkit==2023.9.5", 
+"requests==2.31.0", 
+"scikit-learn==1.4.0", 
+"scipy==1.12.0", 
+"setuptools==69.1.0", 
+"torch-geometric==2.4.0", 
+"packaging==23.2",
+"torch==2.1.2", 
+"tqdm==4.66.2",
+"wandb==0.16.3",
+"pandas"
+]
+
+authors = [
+    {name = "John Savvas", email = "yiannisn2000@gmail.com"}
+] 
 
 [tool.setuptools.packages.find]
 # This tells setuptools to automatically find your packages
-include = ["gflownet*", "mpnn*"] 
+include = ["gflownet*", "gnn_predictor*"] 
+

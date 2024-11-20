@@ -12,12 +12,7 @@ from gflownet.envs.graph_building_env import GraphBuildingEnvContext
 from gflownet.utils.misc import get_worker_rng
 
 
-def cycle_call(it):
-    while True:
-        for i in it():
-            yield i
-
-
+# TODO: Understand what this does
 class DataSource(IterableDataset):
     def __init__(
         self,

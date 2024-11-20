@@ -7,6 +7,7 @@ from gflownet.config import Config
 from gflownet.utils.misc import get_worker_rng
 
 
+# TODO: Understand what this does
 class ReplayBuffer(object):
     def __init__(self, cfg: Config):
         """

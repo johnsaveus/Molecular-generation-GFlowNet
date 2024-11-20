@@ -18,9 +18,9 @@ from gflownet.online_trainer import StandardOnlineTrainer
 from gflownet.utils.conditioning import TemperatureConditional
 from gflownet.utils.misc import get_worker_device
 from gflownet.utils.transforms import to_logreward
-from mpnn.mpnn import GraphTransformer, load_mpnn_to_gflow, mol2graph
+from gnn_predictor.mpnn import GraphTransformer, load_mpnn_to_gflow, mol2graph
 
-MPNN_PROXY = "../../mpnn/model.pth"
+MPNN_PROXY = "../../gnn_predictor/model.pth"
 
 
 class SEHTask(GFNTask):
@@ -87,6 +87,9 @@ class SEHTask(GFNTask):
         return ObjectProperties(preds), is_valid
 
 
+import pandas as pd
+
+
 SOME_MOLS = [
     "O=C(NCc1cc(CCc2cccc(N3CCC(c4cc(-c5cc(-c6cncnc6)[nH]n5)ccn4)CC3)c2)ccn1)c1cccc2ccccc12",
     "O=c1nc2[nH]c3cc(-c4cc(C5CC(c6ccc(CNC7CCOC7c7csc(C8=CC(c9ccc%10ccccc%10c9)CCC8)n7)cc6)CO5)c[nH]4)ccc3nc-2c(=O)[nH]1",
@@ -114,6 +117,15 @@ SOME_MOLS = [
     "O=C(NCc1nccc(C2CC(C(=O)NC3CCC(c4ccc5nc6c(=O)[nH]c(=O)nc-6[nH]c5c4)CO3)CCO2)n1)c1ccnc(-n2cc(-n3cnc4cncnc43)cn2)n1",
     "O=C(NCc1ccc(-c2ccccc2)cc1)c1cccc(C(=O)NCc2nccc(N3C=CCC(c4ncnc5c4ncn5-c4cccc5ccccc45)=C3)n2)c1",
 ]
+# SOME_MOLS = list(pd.read_csv("../../gnn_predictor/KOW.csv")["smiles"])[334:335]
+# SOME_MOLS = [
+#     "BrCBr",
+#     "Brc1c(Br)c(Br)c(Br)c(Br)c1Br",
+#     "Brc1ccc(-c2ccccc2)cc1",
+#     "C=C(Cl)Cl",
+#     # "C=CCC1(CC=C)C(=O)NC(=O)NC1=O",
+# ]
+# # print(SOME_MOLS)
 
 
 class LittleSEHDataset(Dataset):
@@ -221,7 +233,7 @@ def main():
     config.device = "cuda" if torch.cuda.is_available() else "cpu"
     config.overwrite_existing_exp = True
     config.num_training_steps = 1_00
-    config.validate_every = 20
+    config.validate_every = 1
     config.num_final_gen_steps = 10
     config.num_workers = 1
     config.opt.lr_decay = 20_000

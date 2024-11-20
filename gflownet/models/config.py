@@ -12,17 +12,6 @@ class GraphTransformerConfig(StrictDataClass):
     concat_heads: bool = True
 
 
-class SeqPosEnc(int, Enum):
-    Pos = 0
-    Rotary = 1
-
-
-@dataclass
-class SeqTransformerConfig(StrictDataClass):
-    num_heads: int = 2
-    posenc: SeqPosEnc = SeqPosEnc.Rotary
-
-
 @dataclass
 class ModelConfig(StrictDataClass):
     """Generic configuration for models
@@ -41,4 +30,3 @@ class ModelConfig(StrictDataClass):
     graph_transformer: GraphTransformerConfig = field(
         default_factory=GraphTransformerConfig
     )
-    seq_transformer: SeqTransformerConfig = field(default_factory=SeqTransformerConfig)
