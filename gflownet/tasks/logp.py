@@ -117,15 +117,6 @@ SOME_MOLS = [
     "O=C(NCc1nccc(C2CC(C(=O)NC3CCC(c4ccc5nc6c(=O)[nH]c(=O)nc-6[nH]c5c4)CO3)CCO2)n1)c1ccnc(-n2cc(-n3cnc4cncnc43)cn2)n1",
     "O=C(NCc1ccc(-c2ccccc2)cc1)c1cccc(C(=O)NCc2nccc(N3C=CCC(c4ncnc5c4ncn5-c4cccc5ccccc45)=C3)n2)c1",
 ]
-# SOME_MOLS = list(pd.read_csv("../../gnn_predictor/KOW.csv")["smiles"])[334:335]
-# SOME_MOLS = [
-#     "BrCBr",
-#     "Brc1c(Br)c(Br)c(Br)c(Br)c1Br",
-#     "Brc1ccc(-c2ccccc2)cc1",
-#     "C=C(Cl)Cl",
-#     # "C=CCC1(CC=C)C(=O)NC(=O)NC1=O",
-# ]
-# # print(SOME_MOLS)
 
 
 class LittleSEHDataset(Dataset):
@@ -203,11 +194,11 @@ class SEHFragTrainer(StandardOnlineTrainer):
 
     def setup_data(self):
         super().setup_data()
-        # if self.cfg.task.seh.reduced_frag:
-        #     # The examples don't work with the 18 frags
-        #     self.training_data = LittleSEHDataset([])
-        # else:
-        self.training_data = LittleSEHDataset(SOME_MOLS)
+        if self.cfg.task.seh.reduced_frag:
+            # The examples don't work with the 18 frags
+            self.training_data = LittleSEHDataset([])
+        else:
+            self.training_data = LittleSEHDataset(SOME_MOLS)
 
     def setup_env_context(self):
         self.ctx = FragMolBuildingEnvContext(
@@ -232,7 +223,7 @@ def main():
     config.log_dir = f"./logs/debug_run_seh_frag_{datetime.datetime.now().strftime('%Y-%m-%d_%H-%M-%S')}"
     config.device = "cuda" if torch.cuda.is_available() else "cpu"
     config.overwrite_existing_exp = True
-    config.num_training_steps = 1_00
+    config.num_training_steps = 1_0
     config.validate_every = 1
     config.num_final_gen_steps = 10
     config.num_workers = 1
@@ -243,20 +234,6 @@ def main():
 
     trial = SEHFragTrainer(config)
     trial.run()
-
-    # task = SEHTask(config)
-    # preds, val = task.compute_obj_properties(SOME_MOLS)
-    # print(preds)
-
-    # data = LittleSEHDataset(SOME_MOLS)
-    # data.setup(
-    #     task=SEHTask(config),
-    #     ctx=FragMolBuildingEnvContext(
-    #         max_frags=9,
-    #         num_cond_dim=TemperatureConditional(config).encoding_size(),
-    #         fragments=bengio2021flow.FRAGMENTS,
-    #     ),
-    # )
 
 
 if __name__ == "__main__":
