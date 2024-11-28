@@ -87,9 +87,6 @@ class SEHTask(GFNTask):
         return ObjectProperties(preds), is_valid
 
 
-import pandas as pd
-
-
 SOME_MOLS = [
     # "O=C(NCc1cc(CCc2cccc(N3CCC(c4cc(-c5cc(-c6cncnc6)[nH]n5)ccn4)CC3)c2)ccn1)c1cccc2ccccc12",
     # "O=c1nc2[nH]c3cc(-c4cc(C5CC(c6ccc(CNC7CCOC7c7csc(C8=CC(c9ccc%10ccccc%10c9)CCC8)n7)cc6)CO5)c[nH]4)ccc3nc-2c(=O)[nH]1",
@@ -223,7 +220,7 @@ def main():
     config.log_dir = f"./logs/debug_run_seh_frag_{datetime.datetime.now().strftime('%Y-%m-%d_%H-%M-%S')}"
     config.device = "cuda" if torch.cuda.is_available() else "cpu"
     config.overwrite_existing_exp = True
-    config.num_training_steps = 1_0
+    config.num_training_steps = 1_00
     config.validate_every = 1
     config.num_final_gen_steps = 10
     config.num_workers = 1

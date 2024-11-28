@@ -1,3 +1,5 @@
+matplotlib
+seaborn
 torch-cluster 
 torch-scatter
 torch-sparse

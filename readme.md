@@ -2,6 +2,10 @@
 
 Nov 15 - Nov 22
 
-- [ ] Clean unused code for logp task
+- [X] Clean unused code for logp task
 
-- [ ] Write a script to generate molecules
+- [X] Write a script to generate molecules 
+
+- [ ] Write new script for logp simpler based on MakeRings task
+
+- [ ] Add wandb to log experiments

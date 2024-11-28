@@ -1,7 +1,12 @@
 import torch
+import os.path as osp
 import numpy as np
 import rdkit.Chem as Chem
+import matplotlib.pyplot as plt
+import seaborn as sns
+from torch_geometric.data import DataLoader
 from omegaconf import OmegaConf
+import torch_geometric.data as gd
 from gflownet.models.graph_transformer import GraphTransformerGFN
 from gflownet.models import bengio2021flow
 from gflownet.algo.trajectory_balance import TrajectoryBalance
@@ -11,7 +16,7 @@ from gnn_predictor.mpnn import GraphTransformer, load_mpnn_to_gflow, mol2graph
 
 # TODO: Replace file with argparser maybe
 # Load Yaml
-yaml_file = "gflownet/tasks/logs/debug_run_seh_frag_2024-11-27_16-03-44/config.yaml"
+yaml_file = "gflownet/tasks/logs/debug_run_seh_frag_2024-11-28_13-00-53/config.yaml"
 cfg = OmegaConf.load(yaml_file)
 # Load env
 env = GraphBuildingEnv()
@@ -30,7 +35,7 @@ model = GraphTransformerGFN(
 model.load_state_dict(
     (
         torch.load(
-            "gflownet/tasks/logs/debug_run_seh_frag_2024-11-27_16-03-44/model_state.pt"
+            "gflownet/tasks/logs/debug_run_seh_frag_2024-11-28_13-00-53/model_state.pt"
         )["sampling_model_state_dict"][0]
     )
 )
@@ -43,14 +48,35 @@ model.eval()
 np.random.seed(42)
 torch.manual_seed(42)
 samples = algo.create_training_data_from_own_samples(
-    model=model, n=10, cond_info=torch.randn(10, 32)
+    model=model, n=100, cond_info=torch.ones(100, 32)
 )
 trajectories = [sample["traj"] for sample in samples]
 valid = [sample["is_valid"] for sample in samples]
 rdkit_mols = [ctx.graph_to_obj(traj[-1][0]) for traj in trajectories]
-img = Chem.Draw.MolToImageFile(rdkit_mols[1], "test.png")
+# img = Chem.Draw.MolToImageFile(rdkit_mols[1], "test.png")
 
 # Calculate LogP with proxy
 smiles = [Chem.MolToSmiles(mol) for mol in rdkit_mols]
-MPNN_PROXY = "../../gnn_predictor/model.pth"
+pyg_graphs = [mol2graph(mol) for mol in rdkit_mols]
+batch = gd.Batch.from_data_list([i for i in pyg_graphs if i is not None])
+MPNN_PROXY = "gnn_predictor/model.pth"
 proxy_model = load_mpnn_to_gflow(saved_model_path=MPNN_PROXY)
+
+proxy_model.eval()
+logp_values = [
+    value[0]
+    for value in proxy_model(batch.x, batch.edge_index, batch.edge_attr, batch.batch)
+    .detach()
+    .tolist()
+]
+# Draw density plot
+plt.figure(figsize=(10, 6))
+sns.histplot(logp_values, kde=True, stat="density", linewidth=0)
+sns.kdeplot(logp_values, color="red", linewidth=2)
+
+plt.title("Density Plot", fontsize=16)
+plt.xlabel("Value", fontsize=12)
+plt.ylabel("Density", fontsize=12)
+plt.grid(True, linestyle="--", alpha=0.7)
+
+plt.savefig("density_plot.png")
