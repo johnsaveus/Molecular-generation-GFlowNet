@@ -12,11 +12,11 @@ from gflownet.models import bengio2021flow
 from gflownet.algo.trajectory_balance import TrajectoryBalance
 from gflownet.envs.graph_building_env import GraphBuildingEnv
 from gflownet.envs.frag_mol_env import FragMolBuildingEnvContext
+from gflownet.utils.conditioning import TemperatureConditional
 from gnn_predictor.mpnn import GraphTransformer, load_mpnn_to_gflow, mol2graph
 
 # TODO: Replace file with argparser maybe
-# Load Yaml
-yaml_file = "gflownet/tasks/logs/debug_run_seh_frag_2024-11-28_13-00-53/config.yaml"
+yaml_file = "config.yaml"
 cfg = OmegaConf.load(yaml_file)
 # Load env
 env = GraphBuildingEnv()
@@ -32,23 +32,20 @@ model = GraphTransformerGFN(
     num_graph_out=cfg.algo.tb.do_predict_n + 1,
     do_bck=cfg.algo.tb.do_parameterize_p_b,
 )
-model.load_state_dict(
-    (
-        torch.load(
-            "gflownet/tasks/logs/debug_run_seh_frag_2024-11-28_13-00-53/model_state.pt"
-        )["sampling_model_state_dict"][0]
-    )
-)
+model.load_state_dict((torch.load("model_state.pt")["sampling_model_state_dict"][0]))
+model.eval()
 # Load Algo
 algo = TrajectoryBalance(env, ctx, cfg)
-# Sample
-model.eval()
-# on cond_info must pass shape (samples, 32)
-# TODO: Figure out how to pass cond info because right now is randn
+# Load cond_info
+temp_cond = TemperatureConditional(cfg)
+cond_info = temp_cond.sample(400)["encoding"]
+# # Sample
+# # on cond_info must pass shape (samples, 32)
+# # TODO: Figure out how to pass cond info because right now is randn
 np.random.seed(42)
 torch.manual_seed(42)
 samples = algo.create_training_data_from_own_samples(
-    model=model, n=100, cond_info=torch.ones(100, 32)
+    model=model, n=400, cond_info=cond_info
 )
 trajectories = [sample["traj"] for sample in samples]
 valid = [sample["is_valid"] for sample in samples]
